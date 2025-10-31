@@ -1,8 +1,6 @@
 import * as THREE from "three";
 
-
 const G = 0.001;
-
 
 // celestial body class
 class CelestialBody {
@@ -303,8 +301,6 @@ const light = new THREE.PointLight(0xffffff, 70000);
 light.position.set(0, 0, 0);
 scene.add(light);
 
-scene.add(new THREE.AxesHelper(50));
-
 // Planets
 const solar = new SolarSystem(scene);
 
@@ -397,6 +393,16 @@ for (let i = 0; i < 200; i++) {
 
 solar.initCircularOrbits();
 
+//background
+const starTexture = new THREE.TextureLoader().load("textures/stars.jpg");
+const skyGeo = new THREE.SphereGeometry(3000, 64, 64);
+const skyMat = new THREE.MeshBasicMaterial({
+  map: starTexture,
+  side: THREE.BackSide,
+});
+const sky = new THREE.Mesh(skyGeo, skyMat);
+scene.add(sky);
+
 // initilizing player
 const player = new Player(camera);
 
@@ -405,6 +411,7 @@ function animate() {
 
   player.update();
   solar.step(0.1);
+  sky.position.copy(camera.position);
 
   renderer.render(scene, camera);
 }

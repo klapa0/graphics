@@ -49,7 +49,6 @@ class CelestialBody {
 
         void main() {
           vUv = uv;
-          // normala w world space
           vNormal = normalize((modelMatrix * vec4(normal, 0.0)).xyz);
           vPosition = (modelMatrix * vec4(position, 1.0)).xyz;
           gl_Position = projectionMatrix * viewMatrix * vec4(vPosition, 1.0);
@@ -74,8 +73,7 @@ class CelestialBody {
         
           vec4 dayColor = texture2D(dayMap, vUv);
           vec4 nightColor = texture2D(nightMap, vUv);
-        
-          // miękkie przejście dzień/noc
+
           float k = smoothstep(0.0, 0.2, diff);
           gl_FragColor = mix(nightColor, dayColor, k);
         }
